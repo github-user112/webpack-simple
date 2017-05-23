@@ -7,7 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 //生产环境使用
 const extractSass = new ExtractTextPlugin({
 	filename: "./css/[name].css",
-	disable: process.env.NODE_ENV === "development"
+	/*disable: process.env.NODE_ENV === "development"*/
 });
 
 module.exports = {
@@ -26,9 +26,11 @@ module.exports = {
 						loader: "css-loader"
 					}, {
 						loader: "sass-loader"
+					},{
+						loader: 'postcss-loader'
 					}],
-					// 在开发环境使用 style-loader
-					fallback: "style-loader"
+					/*// 在开发环境使用 style-loader
+					fallback: "style-loader"*/
 				})
 			},
 			{
@@ -62,7 +64,7 @@ module.exports = {
 		extractSass,
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
-			template: './src/index.html',
+			template: './index.html',
 			inject: true,
 			minify: {
 				removeComments: true,

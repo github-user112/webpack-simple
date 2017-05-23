@@ -6,6 +6,10 @@ new Vue({
   render: h => h(App)
 })*/
 import './index';
-import './scss.scss'
+import './scss.scss';
 import $ from 'jquery';
 $('body').css('background','red');
+$('body').on('click',function (argument) {
+	// body...
+	alert('3900');
+});
