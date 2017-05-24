@@ -1,0 +1,23 @@
+@import "common/reset.scss";
+body{
+  background: blue;
+  transition:3s all;
+}
+
+div{
+  border:1px solid red;
+  font-size:108px;
+  transform: translate(-50%,-50%);
+  >div{
+	width:100px;
+  }
+  display: flex;
+}
+@keyframes bounce {
+  from{
+    left:0;
+  }
+  to{
+    left:100%;
+  }
+}

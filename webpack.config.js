@@ -3,34 +3,47 @@ var webpack = require('webpack')
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var autoprefixer = require('autoprefixer');
 
 //生产环境使用
 const extractSass = new ExtractTextPlugin({
-	filename: "./css/[name].css",
-	/*disable: process.env.NODE_ENV === "development"*/
+	filename: "./css/[name].[hash].css",
+	disable: process.env.NODE_ENV === "development"
 });
 
 module.exports = {
-	entry: './src/index.js',
+	entry: {
+		index: './src/js/index.js',
+		home: './src/js/home.js',
+	},
 	output: {
 		path: path.resolve(__dirname, './dist/'),
 		//publicPath: '/dist/',
-		filename: './js/[name].js'
+		filename: './js/[name].[hash].js'
 	},
 	module: {
 		rules: [
 			{
 				test: /\.scss$/,
 				use: extractSass.extract({
-					use: [{
-						loader: "css-loader"
-					}, {
-						loader: "sass-loader"
-					},{
-						loader: 'postcss-loader'
-					}],
-					/*// 在开发环境使用 style-loader
-					fallback: "style-loader"*/
+					use: [
+						{
+							loader: "css-loader",
+						},
+						{
+							loader: 'postcss-loader',
+							options: {
+								plugins: [
+									autoprefixer
+								]
+							}
+						},
+						{
+							loader: "sass-loader"
+						}
+					],
+					/*// 在开发环境使用 style-loader*/
+					fallback: "style-loader"
 				})
 			},
 			{
@@ -55,7 +68,7 @@ module.exports = {
 	devServer: {
 		historyApiFallback: true,
 		noInfo: true,
-		inline:true
+		hot: false,
 	},
 	performance: {
 		hints: false
@@ -64,15 +77,31 @@ module.exports = {
 		extractSass,
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
-			template: './index.html',
+			template: './src/index.html',
 			inject: true,
-			minify: {
-				removeComments: true,
-				collapseWhitespace: true,
-				removeAttributeQuotes: true
-				// more options:
-				// https://github.com/kangax/html-minifier#options-quick-reference
-			},
+			chunks: ['index'],
+			/*minify: {
+			 removeComments: true,
+			 collapseWhitespace: true,
+			 removeAttributeQuotes: true
+			 // more options:
+			 // https://github.com/kangax/html-minifier#options-quick-reference
+			 },*/
+			// necessary to consistently work with multiple chunks via CommonsChunkPlugin
+			chunksSortMode: 'dependency'
+		}),
+		new HtmlWebpackPlugin({
+			filename: 'home.html',
+			template: './src/home.html',
+			inject: true,
+			chunks: ['home'],
+			/*minify: {
+			 removeComments: true,
+			 collapseWhitespace: true,
+			 removeAttributeQuotes: true
+			 // more options:
+			 // https://github.com/kangax/html-minifier#options-quick-reference
+			 },*/
 			// necessary to consistently work with multiple chunks via CommonsChunkPlugin
 			chunksSortMode: 'dependency'
 		})
@@ -96,7 +125,7 @@ if (process.env.NODE_ENV === 'production') {
 			}
 		}),
 		new webpack.LoaderOptionsPlugin({
-			minimize: true
+			minimize: false
 		})
 	])
 }

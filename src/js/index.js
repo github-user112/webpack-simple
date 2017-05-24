@@ -5,8 +5,7 @@ new Vue({
   el: '#app',
   render: h => h(App)
 })*/
-import './index';
-import './scss.scss';
+import '../scss/index.scss';
 import $ from 'jquery';
 $('body').css('background','red');
 $('body').on('click',function (argument) {
