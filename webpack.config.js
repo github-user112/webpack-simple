@@ -3,22 +3,22 @@ var webpack = require('webpack')
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var autoprefixer = require('autoprefixer');
+
 
 //生产环境使用
 const extractSass = new ExtractTextPlugin({
 	filename: "./css/[name].[hash].css",
-	disable: process.env.NODE_ENV === "development"
+	/*disable: process.env.NODE_ENV === "development"*/
 });
 
 module.exports = {
 	entry: {
 		index: './src/js/index.js',
-		home: './src/js/home.js',
+		/*home: './src/js/home.js',*/
 	},
 	output: {
 		path: path.resolve(__dirname, './dist/'),
-		//publicPath: '/dist/',
+		publicPath: "",
 		filename: './js/[name].[hash].js'
 	},
 	module: {
@@ -32,16 +32,12 @@ module.exports = {
 						},
 						{
 							loader: 'postcss-loader',
-							options: {
-								plugins: [
-									autoprefixer
-								]
-							}
 						},
 						{
 							loader: "sass-loader"
 						}
 					],
+					publicPath: '../',
 					/*// 在开发环境使用 style-loader*/
 					fallback: "style-loader"
 				})
@@ -52,12 +48,32 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
-				test: /\.(png|jpg|gif|svg)$/,
-				loader: 'file-loader',
+				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+				use: [
+					{
+						loader:'url-loader',
+						options:{
+							limit:10000,
+							name: 'img/[name].[hash:7].[ext]'
+						}
+					},
+					{
+						loader:'img-loader'
+					},
+				],
+			},
+			{
+				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+				loader: 'url-loader',
 				options: {
-					name: '[name].[ext]?[hash]'
+					limit: 10000,
+					name: 'fonts/[name].[hash:7].[ext]'
 				}
-			}
+			},
+			{
+				test: /\.html$/,
+				loader: 'html-loader',
+			},
 		]
 	},
 	resolve: {
@@ -90,21 +106,21 @@ module.exports = {
 			// necessary to consistently work with multiple chunks via CommonsChunkPlugin
 			chunksSortMode: 'dependency'
 		}),
-		new HtmlWebpackPlugin({
+		/*new HtmlWebpackPlugin({
 			filename: 'home.html',
 			template: './src/home.html',
 			inject: true,
 			chunks: ['home'],
-			/*minify: {
+			/!*minify: {
 			 removeComments: true,
 			 collapseWhitespace: true,
 			 removeAttributeQuotes: true
 			 // more options:
 			 // https://github.com/kangax/html-minifier#options-quick-reference
-			 },*/
+			 },*!/
 			// necessary to consistently work with multiple chunks via CommonsChunkPlugin
 			chunksSortMode: 'dependency'
-		})
+		})*/
 	],
 	devtool: '#eval-source-map'
 }
@@ -125,7 +141,7 @@ if (process.env.NODE_ENV === 'production') {
 			}
 		}),
 		new webpack.LoaderOptionsPlugin({
-			minimize: false
+			minimize: true
 		})
 	])
 }
