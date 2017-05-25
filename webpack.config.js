@@ -8,7 +8,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 //生产环境使用
 const extractSass = new ExtractTextPlugin({
 	filename: "./css/[name].[hash].css",
-	/*disable: process.env.NODE_ENV === "development"*/
+	disable: process.env.NODE_ENV === "development"
 });
 
 module.exports = {
