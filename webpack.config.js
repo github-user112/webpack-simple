@@ -96,31 +96,16 @@ module.exports = {
 			template: './src/index.html',
 			inject: true,
 			chunks: ['index'],
-			/*minify: {
+			minify: {
 			 removeComments: true,
 			 collapseWhitespace: true,
 			 removeAttributeQuotes: true
 			 // more options:
 			 // https://github.com/kangax/html-minifier#options-quick-reference
-			 },*/
+			 },
 			// necessary to consistently work with multiple chunks via CommonsChunkPlugin
 			chunksSortMode: 'dependency'
 		}),
-		/*new HtmlWebpackPlugin({
-			filename: 'home.html',
-			template: './src/home.html',
-			inject: true,
-			chunks: ['home'],
-			/!*minify: {
-			 removeComments: true,
-			 collapseWhitespace: true,
-			 removeAttributeQuotes: true
-			 // more options:
-			 // https://github.com/kangax/html-minifier#options-quick-reference
-			 },*!/
-			// necessary to consistently work with multiple chunks via CommonsChunkPlugin
-			chunksSortMode: 'dependency'
-		})*/
 	],
 	devtool: '#eval-source-map'
 }
