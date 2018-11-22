@@ -11,9 +11,9 @@ const webpackConfigDev = {
 		filename: './js/[name].bundle.js'
 	},
 	devServer: {
-		contentBase: path.join(__dirname, "../src"),
+		contentBase: path.join(__dirname, "../dist"),
 		publicPath:'/',
-		host: "127.0.0.1",
+		host: "0.0.0.0",
 		port: "8089",
 		overlay: true, // 浏览器页面上显示错误
 		// open: true, // 开启浏览器
